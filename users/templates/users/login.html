@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Kirish</h2>
+  <form method="post"  action="{% url 'users:login' %}">
+    {% csrf_token %}
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="password" name="password" placeholder="Parol" required>
+    <button type="submit">Kirish</button>
+</form>
+{% for message in messages %}
+    <p>{{ message }}</p>
+{% endfor %}
+</div>
+{% endblock %}

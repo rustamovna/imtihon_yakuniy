@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h4>{{ thread.ad.title }}</h4>
+  <p><b>{{ thread.seller.username }}</b> bilan suhbat</p>
+  <div class="border p-3 mb-3" style="height:300px; overflow-y:scroll;">
+    {% for msg in messages %}
+      <p><b>{{ msg.sender.username }}:</b> {{ msg.text }} <small class="text-muted">{{ msg.created_at|date:"H:i" }}</small></p>
+    {% empty %}
+      <p>Hozircha xabar yo‘q.</p>
+    {% endfor %}
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Yuborish</button>
+  </form>
+
+  <a href="{% url 'ads:list' %}" class="btn btn-secondary mt-2">⬅️ Barcha e’lonlar</a>
+</div>
+{% endblock %}

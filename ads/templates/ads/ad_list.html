@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            <h5 class="mb-3">📂 Kategoriyalar</h5>
+            <ul class="list-group mb-3">
+                {% for cat in categories %}
+                <li class="list-group-item">
+                    <a href="{% url 'ads:by_category' cat.id %}">{{ cat.name }}</a>
+                </li>
+                {% empty %}
+                <li class="list-group-item">Kategoriya yo‘q</li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'ads:favorites' %}" class="btn btn-outline-primary w-100">
+                ❤️ Sevimlilar
+            </a>
+        </div>
+
+        <div class="col-md-9">
+            <h2 class="mb-4">Barcha e’lonlar</h2>
+            <div class="row">
+                {% for ad in ads %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        {% if ad.images.first %}
+                        <img src="{{ ad.images.first.image.url }}" 
+                             class="card-img-top" 
+                             alt="{{ ad.title }}" 
+                             style="height:200px; object-fit:cover;">
+                        {% else %}
+                        <img src="https://via.placeholder.com/300x200" 
+                             class="card-img-top" 
+                             alt="No image" 
+                             style="height:200px; object-fit:cover;">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ ad.title }}</h5>
+                            <p class="card-text text-success">{{ ad.price }} so‘m</p>
+                            <p class="card-text small text-muted">{{ ad.description|truncatewords:15 }}</p>
+                            <a href="{% url 'ads:detail' ad.pk %}" class="btn btn-primary btn-sm">Batafsil</a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>Hozircha e’lonlar yo‘q.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

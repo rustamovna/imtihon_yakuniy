@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h2>{% if ad %}E'lonni tahrirlash{% else %}Yangi e'lon{% endif %}</h2>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form|crispy }}
+  <div class="form-group">
+    <label>Rasmlar (bir nechta tanlang)</label>
+    <input type="file" name="images" multiple class="form-control">
+  </div>
+  <button class="btn btn-success" type="submit">Saqlash</button>
+</form>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Ro'yxatdan o'tish</h2>
+  <form method="post">
+    {% csrf_token %}
+
+    <!-- form xatolarini chiqarish -->
+    {% if form.errors %}
+      <div class="alert alert-danger">
+        <ul>
+        {% for field, errors in form.errors.items %}
+          <li><strong>{{ field }}:</strong> {{ errors|join:", " }}</li>
+        {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <div class="form-group">
+      <label for="id_username">Username</label>
+      {{ form.username }}
+    </div>
+
+    <div class="form-group">
+      <label for="id_email">Email</label>
+      {{ form.email }}
+    </div>
+
+    <div class="form-group">
+      <label for="id_password1">Parol</label>
+      {{ form.password1 }}
+    </div>
+
+    <div class="form-group">
+      <label for="id_password2">Parolni tasdiqlash</label>
+      {{ form.password2 }}
+    </div>
+
+    <button type="submit" class="btn btn-success">Ro'yxatdan o'tish</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Profil</h2>
+
+<p><strong>Username:</strong> {{ user.username }}</p>
+<p><strong>Email:</strong> {{ user.email }}</p>
+<p><strong>Ism/Familiya:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+
+{% if user.profile.avatar %}
+  <p><img src="{{ user.profile.avatar.url }}" alt="Avatar" style="max-width:150px;"></p>
+{% endif %}
+
+<hr>
+<a href="{% url 'users:password_reset_complete' %}" class="btn btn-warning">
+    🔑 Parolni o‘zgartirish
+  </a> 
+
+  <hr>
+
+<h3>Profilni tahrirlash</h3>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ pform.as_p }}
+  <button type="submit" class="btn btn-primary">Saqlash</button>
+</form>
+{% endblock %}

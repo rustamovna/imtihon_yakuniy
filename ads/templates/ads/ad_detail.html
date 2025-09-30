@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card shadow-lg" style="max-width: 500px;">
+        {% if ad.images.first %}
+        <img src="{{ ad.images.first.image.url }}" 
+             class="card-img-top" 
+             alt="{{ ad.title }}" 
+             style="height:250px; object-fit:cover;">
+        {% else %}
+        <img src="https://via.placeholder.com/500x250" 
+             class="card-img-top" 
+             alt="No image" 
+             style="height:250px; object-fit:cover;">
+        {% endif %}
+        <div class="card-body">
+            <h4 class="card-title">{{ ad.title }}</h4>
+            <h6 class="text-success">{{ ad.price }} so‘m</h6>
+            <p class="card-text">{{ ad.description }}</p>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'chat:start_thread' ad.id %}" class="btn btn-primary btn-sm">Xabar yuborish</a>
+                <a href="{% url 'ads:toggle_fav' ad.pk %}" class="btn btn-outline-secondary btn-sm">
+                    {% if is_fav %}
+                        Sevimlidan olib tashlash
+                    {% else %}
+                        Sevimlilarga qo'shish
+                    {% endif %}
+                </a>
+            {% else %}
+                <a href="{% url 'ads:list' %}" class="btn btn-secondary btn-sm">⬅️ Barcha e’lonlar</a>
+            {% endif %}
+            <div class="mt-3">
+                <a href="{% url 'ads:list' %}" class="btn btn-secondary btn-sm w-100">
+                    ⬅️ Barcha e’lonlar
+                </a>
+                <hr>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'ads:add_complaint' ad.id %}" class="btn btn-danger btn-sm">🚨 Shikoyat qilish</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

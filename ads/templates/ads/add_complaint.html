@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h3>"{{ ad.title }}" e’loni haqida shikoyat yuborish</h3>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-danger">Yuborish</button>
+        <a href="{% url 'ads:detail' ad.id %}" class="btn btn-secondary">Bekor qilish</a>
+    </form>
+
+    <hr>
+    <h5>📌 Oldingi shikoyatlar</h5>
+    {% if complaints %}
+        <ul class="list-group">
+            {% for c in complaints %}
+                <li class="list-group-item">
+                    <strong>{{ c.user.username }}</strong> ({{ c.created_at|date:"d.m.Y H:i" }}):  
+                    <p>{{ c.text }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Hozircha shikoyatlar yo‘q.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>❤️ Sevimli e’lonlar</h2>
+        <a href="{% url 'ads:list' %}" class="btn btn-secondary btn-sm">⬅️ Barcha e’lonlar</a>
+    </div>
+
+    <div class="row">
+        {% for ad in ads %}
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm h-100">
+                {% if ad.images.first %}
+                <img src="{{ ad.images.first.image.url }}" 
+                     class="card-img-top" 
+                     style="height:200px; object-fit:cover;" 
+                     alt="{{ ad.title }}">
+                {% else %}
+                <img src="https://via.placeholder.com/300x200" 
+                     class="card-img-top" 
+                     style="height:200px; object-fit:cover;" 
+                     alt="No image">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ ad.title }}</h5>
+                    <p class="card-text text-success">{{ ad.price }} so‘m</p>
+                    <a href="{% url 'ads:detail' ad.pk %}" class="btn btn-primary btn-sm">Batafsil</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>Sevimli e’lonlaringiz yo‘q.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
