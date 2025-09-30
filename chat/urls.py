@@ -1,9 +1,9 @@
 from django.urls import path
-from . import views
+from .views import StartThreadView, ThreadDetailView
 
 app_name = 'chat'
 
 urlpatterns = [
-    path('thread/<int:thread_id>/', views.thread_detail, name='thread_detail'),  
-    path('start/<int:ad_id>/', views.start_thread, name='start_thread'),
+    path('start/<int:ad_id>/', StartThreadView.as_view(), name='start_thread'),
+    path('thread/<int:thread_id>/', ThreadDetailView.as_view(), name='thread_detail'),
 ]

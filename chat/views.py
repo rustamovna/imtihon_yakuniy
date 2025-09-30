@@ -1,24 +1,37 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import MessageThread, Message
 from ads.models import Ad
-from django.contrib.auth.decorators import login_required
 from .forms import MessageForm
 
-@login_required
-def start_thread(request, ad_id):
-    ad = get_object_or_404(Ad, pk=ad_id)
-    thread, created = MessageThread.objects.get_or_create(
-        ad=ad, 
-        buyer=request.user, 
-        seller=ad.seller
+
+class StartThreadView(LoginRequiredMixin, View):
+    def get(self, request, ad_id):
+        ad = get_object_or_404(Ad, pk=ad_id)
+        thread, created = MessageThread.objects.get_or_create(
+            ad=ad,
+            buyer=request.user,
+            seller=ad.seller
         )
-    return redirect('chat:thread_detail', thread_id=thread.id)  
+        return redirect('chat:thread_detail', thread_id=thread.id)
 
-@login_required
-def thread_detail(request, thread_id):  
-    thread = get_object_or_404(MessageThread, id=thread_id)
 
-    if request.method == 'POST':
+class ThreadDetailView(LoginRequiredMixin, View):
+    template_name = 'chat/thread_detail.html'
+
+    def get(self, request, thread_id):
+        thread = get_object_or_404(MessageThread, id=thread_id)
+        form = MessageForm()
+        messages = thread.messages.all().order_by('created_at')
+        return render(request, self.template_name, {
+            'thread': thread,
+            'messages': messages,
+            'form': form
+        })
+
+    def post(self, request, thread_id):
+        thread = get_object_or_404(MessageThread, id=thread_id)
         form = MessageForm(request.POST)
         if form.is_valid():
             message = form.save(commit=False)
@@ -26,13 +39,10 @@ def thread_detail(request, thread_id):
             message.sender = request.user
             message.save()
             return redirect('chat:thread_detail', thread_id=thread.id)
-    else:
-        form = MessageForm()
 
-    messages = thread.messages.all().order_by('created_at')  
-
-    return render(request, 'chat/thread_detail.html', {
-        'thread': thread,
-        'messages': messages,
-        'form': form
-    })
+        messages = thread.messages.all().order_by('created_at')
+        return render(request, self.template_name, {
+            'thread': thread,
+            'messages': messages,
+            'form': form
+        })

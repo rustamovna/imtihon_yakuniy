@@ -25,15 +25,30 @@
     {% endif %}
 
     
-    <ul class="navbar-nav">
-      {% if user.is_authenticated %}
-        <li class="nav-item"><a class="nav-link" href="{% url 'users:profile' %}">{{ user.username }}</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Chiqish</a></li>
-      {% else %}
-        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Kirish</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'users:register' %}">Ro'yxatdan o'tish</a></li>
-      {% endif %}
-    </ul>
+<ul class="navbar-nav">
+  {% if user.is_authenticated %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'users:profile' %}">{{ user.username }}</a>
+    </li>
+    <li class="nav-item">
+      <form method="post" action="{% url 'users:logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-link nav-link" style="display:inline; padding:0;">
+          Chiqish
+        </button>
+      </form>
+    </li>
+  {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'users:login' %}">Kirish</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'users:register' %}">Ro'yxatdan o'tish</a>
+    </li>
+  {% endif %}
+</ul>
+
+
 
     
   </div>
