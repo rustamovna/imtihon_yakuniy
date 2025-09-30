@@ -96,12 +96,11 @@ marketplace/
 
 1. Loyihani klonlash:
    ```bash
-   git clone https://github.com/username/marketplace.git
+   git clone https://github.com/rustamovna/imtihon_yakuniy
    cd marketplace
 
 python -m venv venv
-source venv/bin/activate   # Linux/Mac
-venv\Scripts\activate      # Windows
+venv\Scripts\activate      
 
 pip install -r requirements.txt
 
